@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<izpack:userinput version="5.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xmlns:izpack="http://izpack.org/schema/userinput"
+                  xmlns:xi="http://www.w3.org/2001/XInclude"
+                  xsi:schemaLocation="http://izpack.org/schema/userinput http://izpack.org/schema/5.0/izpack-userinput-5.0.xsd">
+	<panel id="userInputPanel">    
+	    <field type="text" align="left" variable="keystore.password">
+            <spec>
+              <processor class="com.izforge.izpack.panels.userinput.processor.PasswordEncryptionProcessor" backupVariable="keystore.password.plain">
+                 <configuration>
+                     <encryptionKey>MySecretKey</encryptionKey>
+                     <algorithm>AES</algorithm>
+                 </configuration>
+              </processor>
+           </spec>
+           <validator class="com.izforge.izpack.panels.userinput.validator.NotEmptyValidator" id="input.error.password.empty"/>
+        </field>
+	</panel>
+
+</izpack:userinput>
