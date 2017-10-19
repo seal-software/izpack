@@ -227,6 +227,19 @@ public class AutomatedInstallData implements InstallData
     {
         return getVariable(INSTALL_PATH);
     }
+    
+    /**
+     * Returns the un-install path. 
+     * If not defined it will return the current value of the install path. 
+     *
+     * @return the current uninstall path. May be {@code null}
+     * @see #getInstallPath
+     */
+    @Override
+	public String getUnInstallPath() {
+		String value = getVariable(UNINSTALL_PATH);
+		return value != null ? value : getInstallPath();
+	}
 
     /**
      * Sets the default install path.
@@ -538,4 +551,5 @@ public class AutomatedInstallData implements InstallData
     {
         return installerrequirements;
     }
+
 }
