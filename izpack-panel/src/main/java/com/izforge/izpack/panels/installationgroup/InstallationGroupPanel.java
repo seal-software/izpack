@@ -23,6 +23,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.Insets;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -39,6 +40,9 @@ import java.util.logging.Logger;
 
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -60,6 +64,7 @@ import com.izforge.izpack.api.data.Pack;
 import com.izforge.izpack.api.data.Panel;
 import com.izforge.izpack.api.handler.AbstractUIHandler;
 import com.izforge.izpack.api.resource.Resources;
+import com.izforge.izpack.gui.LabelFactory;
 import com.izforge.izpack.installer.data.GUIInstallData;
 import com.izforge.izpack.installer.gui.InstallerFrame;
 import com.izforge.izpack.installer.gui.IzPanel;
@@ -177,16 +182,25 @@ public class InstallationGroupPanel extends IzPanel
                 }
 
                 JRadioButton button = (JRadioButton) value;
-                button.setForeground(isSelected ?
-                                             table.getSelectionForeground() : table.getForeground());
-                button.setBackground(isSelected ?
-                                             table.getSelectionBackground() : table.getBackground());
+                setColors(table, isSelected, button);
+              
+                JPanel panel = new JPanel(new GridLayout(0, 1));
+                panel.setOpaque(false);
+                panel.add(button);
+                setColors(table, isSelected, panel);
+                
+                return panel;
 
                 // long millis = System.currentTimeMillis() % 100000;
                 // System.out.printf("%1$5d: row: %2$d; isSelected: %3$5b; buttonSelected: %4$5b; selectedRow: %5$d%n", millis, row, isSelected, button.isSelected(), selectedRow);
 
-                return button;
+//                return button;
             }
+            
+            private void setColors(JTable table, boolean isSelected, JComponent component) {
+				component.setForeground(isSelected ? table.getSelectionForeground() : table.getForeground());
+                component.setBackground(isSelected ? table.getSelectionBackground() : table.getBackground());
+			}
         };
         columnModel.getColumn(0).setCellRenderer(radioButtonRenderer);
 
@@ -304,13 +318,24 @@ public class InstallationGroupPanel extends IzPanel
      */
     protected void buildLayout()
     {
-        GridBagConstraints gridBagConstraints;
+    	GridBagConstraints gridBagConstraints;
 
         descriptionField = new JTextPane();
         groupScrollPane = new JScrollPane();
         groupsTable = new JTable();
 
         setLayout(new GridBagLayout());
+        
+		JLabel label = LabelFactory.create(getString("InstallationGroupPanel.info"), parent.getIcons().get("preferences"), TRAILING);
+		label.setHorizontalAlignment(LEFT);
+		gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 0.0;
+        gridBagConstraints.anchor = GridBagConstraints.WEST;
+        gridBagConstraints.insets = new Insets(0, 0, 10, 0);
+        add(label, gridBagConstraints);
 
         descriptionField.setMargin(new Insets(2, 2, 2, 2));
         descriptionField.setAlignmentX(LEFT_ALIGNMENT);
@@ -319,22 +344,23 @@ public class InstallationGroupPanel extends IzPanel
         descriptionField.setOpaque(false);
         descriptionField.setText("<b>Install group description text</b>");
         descriptionField.setContentType("text/html");
-        descriptionField.setBorder(
-                new TitledBorder(getString("PacksPanel.description")));
+        descriptionField.setBorder(new TitledBorder(getString("PacksPanel.description")));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridy = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 0.3;
         add(descriptionField, gridBagConstraints);
-
+        
         groupScrollPane.setBorder(new EmptyBorder(1, 1, 1, 1));
         groupScrollPane.setViewportView(groupsTable);
-
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.gridy = 1;
+        
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
+        
         add(groupScrollPane, gridBagConstraints);
     }
 
