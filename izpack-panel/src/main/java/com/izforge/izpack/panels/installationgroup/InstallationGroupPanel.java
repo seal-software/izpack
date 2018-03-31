@@ -31,7 +31,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -683,67 +682,6 @@ public class InstallationGroupPanel extends IzPanel
             count++;
         }
         return model;
-    }
-
-    protected static class GroupData
-    {
-        static final long ONEK = 1024;
-        static final long ONEM = 1024 * 1024;
-        static final long ONEG = 1024 * 1024 * 1024;
-
-        String name;
-        String description;
-        String sortKey;
-        long size;
-        HashSet<String> packNames = new HashSet<String>();
-
-        GroupData(String name, String description, String sortKey)
-        {
-            this.name = name;
-            this.description = description;
-            this.sortKey = sortKey;
-        }
-
-        String getSizeString()
-        {
-            String s;
-            if (size < ONEK)
-            {
-                s = size + " bytes";
-            }
-            else if (size < ONEM)
-            {
-                s = size / ONEK + " KB";
-            }
-            else if (size < ONEG)
-            {
-                s = size / ONEM + " MB";
-            }
-            else
-            {
-                s = size / ONEG + " GB";
-            }
-            return s;
-        }
-
-        @Override
-        public String toString()
-        {
-            StringBuffer tmp = new StringBuffer("GroupData(");
-            tmp.append(name);
-            tmp.append("){description=");
-            tmp.append(description);
-            tmp.append(", sortKey=");
-            tmp.append(sortKey);
-            tmp.append(", size=");
-            tmp.append(size);
-            tmp.append(", sizeString=");
-            tmp.append(getSizeString());
-            tmp.append(", packNames=");
-            tmp.append(packNames);
-            tmp.append("}");
-            return tmp.toString();
-        }
     }
 
 }
