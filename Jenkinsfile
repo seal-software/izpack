@@ -41,12 +41,12 @@ pipeline {
           }}
         }
 
-#        stage('deploy') {
-#          steps {
-#            printMessage("Deploying")
-#            deploy()
-#          }
-#        }
+//        stage('deploy') {
+//          steps {
+//            printMessage("Deploying")
+//            deploy()
+//          }
+//        }
     }
 
     post {
