@@ -429,6 +429,10 @@
           <source>1.6</source>
           <target>1.6</target>
           <encoding>UTF-8</encoding>
+          <compilerArgs>
+              <compilerArg>-XepAllErrorsAsWarnings</compilerArg>
+              <compilerArg>-XepExcludedPaths:.*/target/.*</compilerArg>
+          </compilerArgs>
         </configuration>
       </plugin>
       <plugin>
@@ -535,6 +539,10 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
         <executions>
+          <execution>
+              <id>enforce</id>
+              <phase/>
+          </execution> 
           <execution>
             <id>enforce-maven</id>
             <goals>
