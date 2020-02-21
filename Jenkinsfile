@@ -32,7 +32,7 @@ pipeline {
         stage('build') {
           steps {
             printMessage("Building")
-            sh "mvn -U clean package"
+            sh "mvn -U clean install"
           }
           post { always {
             // Show test results in jenkins ui
