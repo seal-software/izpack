@@ -23,6 +23,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.Insets;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -30,7 +31,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -39,6 +39,9 @@ import java.util.logging.Logger;
 
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -60,6 +63,7 @@ import com.izforge.izpack.api.data.Pack;
 import com.izforge.izpack.api.data.Panel;
 import com.izforge.izpack.api.handler.AbstractUIHandler;
 import com.izforge.izpack.api.resource.Resources;
+import com.izforge.izpack.gui.LabelFactory;
 import com.izforge.izpack.installer.data.GUIInstallData;
 import com.izforge.izpack.installer.gui.InstallerFrame;
 import com.izforge.izpack.installer.gui.IzPanel;
@@ -177,15 +181,23 @@ public class InstallationGroupPanel extends IzPanel
                 }
 
                 JRadioButton button = (JRadioButton) value;
-                button.setForeground(isSelected ?
-                                             table.getSelectionForeground() : table.getForeground());
-                button.setBackground(isSelected ?
-                                             table.getSelectionBackground() : table.getBackground());
-
+                setColors(table, isSelected, button);
+              
+                JPanel panel = new JPanel(new GridLayout(0, 1));
+                panel.setOpaque(false);
+                panel.add(button);
+                setColors(table, isSelected, panel);
+                
                 // long millis = System.currentTimeMillis() % 100000;
                 // System.out.printf("%1$5d: row: %2$d; isSelected: %3$5b; buttonSelected: %4$5b; selectedRow: %5$d%n", millis, row, isSelected, button.isSelected(), selectedRow);
 
-                return button;
+                return panel;
+            }
+            
+            private void setColors(JTable table, boolean isSelected, JComponent component)
+            {
+                component.setForeground(isSelected ? table.getSelectionForeground() : table.getForeground());
+                component.setBackground(isSelected ? table.getSelectionBackground() : table.getBackground());
             }
         };
         columnModel.getColumn(0).setCellRenderer(radioButtonRenderer);
@@ -311,6 +323,17 @@ public class InstallationGroupPanel extends IzPanel
         groupsTable = new JTable();
 
         setLayout(new GridBagLayout());
+        
+        JLabel label = LabelFactory.create(getString("InstallationGroupPanel.info"), parent.getIcons().get("preferences"), TRAILING);
+        label.setHorizontalAlignment(LEFT);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 0.0;
+        gridBagConstraints.anchor = GridBagConstraints.WEST;
+        gridBagConstraints.insets = new Insets(0, 0, 10, 0);
+        add(label, gridBagConstraints);
 
         descriptionField.setMargin(new Insets(2, 2, 2, 2));
         descriptionField.setAlignmentX(LEFT_ALIGNMENT);
@@ -319,22 +342,23 @@ public class InstallationGroupPanel extends IzPanel
         descriptionField.setOpaque(false);
         descriptionField.setText("<b>Install group description text</b>");
         descriptionField.setContentType("text/html");
-        descriptionField.setBorder(
-                new TitledBorder(getString("PacksPanel.description")));
+        descriptionField.setBorder(new TitledBorder(getString("PacksPanel.description")));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridy = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 0.3;
         add(descriptionField, gridBagConstraints);
-
+        
         groupScrollPane.setBorder(new EmptyBorder(1, 1, 1, 1));
         groupScrollPane.setViewportView(groupsTable);
-
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.gridy = 1;
+        
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
+        
         add(groupScrollPane, gridBagConstraints);
     }
 
@@ -657,67 +681,6 @@ public class InstallationGroupPanel extends IzPanel
             count++;
         }
         return model;
-    }
-
-    protected static class GroupData
-    {
-        static final long ONEK = 1024;
-        static final long ONEM = 1024 * 1024;
-        static final long ONEG = 1024 * 1024 * 1024;
-
-        String name;
-        String description;
-        String sortKey;
-        long size;
-        HashSet<String> packNames = new HashSet<String>();
-
-        GroupData(String name, String description, String sortKey)
-        {
-            this.name = name;
-            this.description = description;
-            this.sortKey = sortKey;
-        }
-
-        String getSizeString()
-        {
-            String s;
-            if (size < ONEK)
-            {
-                s = size + " bytes";
-            }
-            else if (size < ONEM)
-            {
-                s = size / ONEK + " KB";
-            }
-            else if (size < ONEG)
-            {
-                s = size / ONEM + " MB";
-            }
-            else
-            {
-                s = size / ONEG + " GB";
-            }
-            return s;
-        }
-
-        @Override
-        public String toString()
-        {
-            StringBuffer tmp = new StringBuffer("GroupData(");
-            tmp.append(name);
-            tmp.append("){description=");
-            tmp.append(description);
-            tmp.append(", sortKey=");
-            tmp.append(sortKey);
-            tmp.append(", size=");
-            tmp.append(size);
-            tmp.append(", sizeString=");
-            tmp.append(getSizeString());
-            tmp.append(", packNames=");
-            tmp.append(packNames);
-            tmp.append("}");
-            return tmp.toString();
-        }
     }
 
 }
