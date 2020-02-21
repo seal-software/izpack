@@ -699,11 +699,11 @@
           <artifactId>maven-release-plugin</artifactId>
           <version>2.5.3</version>
         </plugin>
-<!--         <plugin> -->
-<!--           <groupId>org.apache.maven.plugins</groupId> -->
-<!--           <artifactId>maven-gpg-plugin</artifactId> -->
-<!--           <version>1.6</version> -->
-<!--         </plugin> -->
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-gpg-plugin</artifactId>
+          <version>1.6</version>
+        </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-javadoc-plugin</artifactId>
@@ -797,7 +797,7 @@
     by activating the profile.
     -->
     <profile>
-      <id>release</id>
+      <id>dotherelease</id>
       <activation>
         <property>
           <name>performRelease</name>
@@ -806,26 +806,26 @@
       </activation>
       <build>
         <plugins>
-<!--           <plugin> -->
-<!--             <groupId>org.apache.maven.plugins</groupId> -->
-<!--             <artifactId>maven-gpg-plugin</artifactId> -->
-<!--             <executions> -->
-<!--               <execution> -->
-<!--                 <id>sign-artifacts</id> -->
-<!--                 <phase>verify</phase> -->
-<!--                 <goals> -->
-<!--                   <goal>sign</goal> -->
-<!--                 </goals> -->
-<!--               </execution> -->
-<!--             </executions> -->
-<!--           </plugin> -->
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-gpg-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>sign-artifacts</id>
+                <phase>verify</phase>
+                <goals>
+                  <goal>sign</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-javadoc-plugin</artifactId>
             <executions>
               <execution>
                 <id>attach-javadoc</id>
-                <!--<phase>verify</phase>-->
+                <phase>verify</phase>
                 <goals>
                   <goal>jar</goal>
                 </goals>
