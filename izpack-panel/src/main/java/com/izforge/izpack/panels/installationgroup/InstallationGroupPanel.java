@@ -188,16 +188,15 @@ public class InstallationGroupPanel extends IzPanel
                 panel.add(button);
                 setColors(table, isSelected, panel);
                 
-                return panel;
-
                 // long millis = System.currentTimeMillis() % 100000;
                 // System.out.printf("%1$5d: row: %2$d; isSelected: %3$5b; buttonSelected: %4$5b; selectedRow: %5$d%n", millis, row, isSelected, button.isSelected(), selectedRow);
 
-//                return button;
+                return panel;
             }
             
-            private void setColors(JTable table, boolean isSelected, JComponent component) {
-				component.setForeground(isSelected ? table.getSelectionForeground() : table.getForeground());
+            private void setColors(JTable table, boolean isSelected, JComponent component)
+            {
+                component.setForeground(isSelected ? table.getSelectionForeground() : table.getForeground());
                 component.setBackground(isSelected ? table.getSelectionBackground() : table.getBackground());
 			}
         };
@@ -317,7 +316,7 @@ public class InstallationGroupPanel extends IzPanel
      */
     protected void buildLayout()
     {
-    	GridBagConstraints gridBagConstraints;
+        GridBagConstraints gridBagConstraints;
 
         descriptionField = new JTextPane();
         groupScrollPane = new JScrollPane();
@@ -325,9 +324,9 @@ public class InstallationGroupPanel extends IzPanel
 
         setLayout(new GridBagLayout());
         
-		JLabel label = LabelFactory.create(getString("InstallationGroupPanel.info"), parent.getIcons().get("preferences"), TRAILING);
-		label.setHorizontalAlignment(LEFT);
-		gridBagConstraints = new java.awt.GridBagConstraints();
+        JLabel label = LabelFactory.create(getString("InstallationGroupPanel.info"), parent.getIcons().get("preferences"), TRAILING);
+        label.setHorizontalAlignment(LEFT);
+        gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.weightx = 1.0;
