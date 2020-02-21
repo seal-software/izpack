@@ -18,7 +18,6 @@ pipeline {
 
     environment {
         BUILDVERSION = buildVersion()
-        VERSION = "5.1.x-SEAL.${env.BUILD_NUMBER}"
     }
 
     stages {
@@ -41,12 +40,12 @@ pipeline {
           }}
         }
 
-//        stage('deploy') {
-//          steps {
-//            printMessage("Deploying")
-//            deploy()
-//          }
-//        }
+        stage('deploy') {
+          steps {
+            printMessage("Deploying")
+            deploy()
+          }
+        }
     }
 
     post {
@@ -73,17 +72,14 @@ def deploy() {
 }
 
 def getVersion() {
-    return isMaster() ? VERSION : BUILDVERSION
+    return BUILDVERSION
 }
 
 def getDeployProfile() {
-    return isMasterOrRelease() ? "release" : "builds"
+    return isRelease() ? "release" : "builds"
 }
 
-def isMasterOrRelease() {
-    return isMaster() || env.BRANCH_NAME ==~ /^releases\/.*/ || env.BRANCH_NAME ==~ /^....Q.$/
+def isRelease() {
+    return env.BRANCH_NAME ==~ /^releases\/.*/
 }
 
-def isMaster() {
-    return env.BRANCH_NAME == 'master'
-}
