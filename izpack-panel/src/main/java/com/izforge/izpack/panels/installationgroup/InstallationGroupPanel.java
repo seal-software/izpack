@@ -198,7 +198,7 @@ public class InstallationGroupPanel extends IzPanel
             {
                 component.setForeground(isSelected ? table.getSelectionForeground() : table.getForeground());
                 component.setBackground(isSelected ? table.getSelectionBackground() : table.getBackground());
-			}
+            }
         };
         columnModel.getColumn(0).setCellRenderer(radioButtonRenderer);
 
