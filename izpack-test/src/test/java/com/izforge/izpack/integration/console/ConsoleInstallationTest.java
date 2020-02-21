@@ -178,6 +178,39 @@ public class ConsoleInstallationTest extends AbstractConsoleInstallationTest
         assertTrue(properties.containsKey(InstallData.INSTALL_PATH));
         assertEquals(installPath.getPath(), properties.getProperty(InstallData.INSTALL_PATH));
     }
+    
+    /**
+     * Runs the console installer to generate properties.
+     *
+     * @throws Exception for any error
+     */
+    @Test
+    @InstallFile("samples/console/install_with_userinputpanel.xml")
+    public void testGeneratePropertiesWithUserInputPanel() throws Exception
+    {
+    	String key = "keystore.password";
+    	String password = "MySecretPassword";
+        InstallData installData = getInstallData();
+
+        File file = new File(temporaryFolder.getRoot(), "IZPackInstall.properties");
+        File installPath = new File(temporaryFolder.getRoot(), "izpackTest");
+        installData.setInstallPath(installPath.getAbsolutePath());
+        installData.setVariable(key, password);
+
+        installer.run(ConsoleInstallerAction.CONSOLE_GEN_TEMPLATE, file.getPath(), new String[0]);
+
+        // verify the installation thinks it was successful
+        assertTrue(installData.isInstallSuccess());
+
+        // check the properties file matches that expected
+        Properties properties = new Properties();
+        properties.load(new FileInputStream(file));
+        assertEquals(2, properties.size());
+        assertTrue(properties.containsKey(InstallData.INSTALL_PATH));
+        assertEquals(installPath.getPath(), properties.getProperty(InstallData.INSTALL_PATH));
+        assertTrue(properties.containsKey(key));
+        assertEquals(password, properties.getProperty(key));
+    }
 
     /**
      * Runs the console installer, installing from a properties file.
@@ -204,6 +237,48 @@ public class ConsoleInstallationTest extends AbstractConsoleInstallationTest
 
         // verify the installation thinks it was successful
         assertTrue(installData.isInstallSuccess());
+
+        // make sure some of the expected files are installed
+        assertTrue(new File(installPath, "Licence.txt").exists());
+        assertTrue(new File(installPath, "Readme.txt").exists());
+        assertTrue(new File(installPath, "Uninstaller/uninstaller.jar").exists());
+    }
+    
+    /**
+     * Runs the console installer, installing from a properties file and using user input panel.
+     *
+     * @throws Exception for any error
+     */
+    @Test
+    @InstallFile("samples/console/install_with_userinputpanel.xml")
+    public void testInstallFromPropertiesWithUserInputPanel() throws Exception
+    {
+    	String password = "MySecretPassword";
+        InstallData installData = getInstallData();
+
+        File file = new File(temporaryFolder.getRoot(), "IzPackInstall.properties");
+        File installPath = new File(temporaryFolder.getRoot(), "izpackTest");
+        Properties properties = new Properties();
+        properties.put(InstallData.INSTALL_PATH, installPath.getPath());
+        properties.put("keystore.password", password);
+        properties.store(new FileOutputStream(file), "IzPack installation properties");
+
+        TestConsole console = installer.getConsole();
+        installer.run(ConsoleInstallerAction.CONSOLE_FROM_TEMPLATE, file.getPath(), new String[0]);
+
+        // make sure there were no attempts to read from the console, as no prompting should occur
+        assertEquals(0, console.getReads());
+
+        // verify the installation thinks it was successful
+        assertTrue(installData.isInstallSuccess());
+        
+        String encrypted = installData.getVariable("keystore.password");
+        assertNotNull(encrypted);
+        assertNotEquals(password, encrypted);
+        
+        String plain = installData.getVariable("keystore.password.plain");
+        assertNotNull(plain);
+        assertEquals(password, plain);
 
         // make sure some of the expected files are installed
         assertTrue(new File(installPath, "Licence.txt").exists());
