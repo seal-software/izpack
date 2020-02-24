@@ -184,11 +184,13 @@ public class UserInputConsolePanel extends AbstractConsolePanel
             String name = field.getVariable();
             if (name != null)
             {
-                String value = properties.getProperty(name);
-                if (value != null)
-                {
-                    installData.setVariable(name, value);
-                }
+            	 String value = properties.getProperty(name);
+                 if (value != null)
+                 {
+                 	Field theRealField = field.getField();
+                 	theRealField.setSaving(true);
+                 	theRealField.setValue(value);
+                 }
             }
         }
         return true;

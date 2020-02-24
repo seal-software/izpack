@@ -46,6 +46,12 @@ public interface InstallData
      * The install path.
      */
     String INSTALL_PATH = "INSTALL_PATH";
+    
+    /**
+     * The uninstall path. 
+     * This may be used to have a different path during uninstall. 
+     */
+    String UNINSTALL_PATH = "UNINSTALL_PATH";
 
     /**
      * Determines if the installation is being modified.
@@ -108,6 +114,15 @@ public interface InstallData
      * @see #setInstallPath
      */
     String getInstallPath();
+    
+    /**
+     * Returns the un-install path. 
+     * If not defined it will return the current value of the install path. 
+     *
+     * @return the current uninstall path. May be {@code null}
+     * @see #getInstallPath
+     */
+    String getUnInstallPath();
 
     /**
      * Sets the default install path.

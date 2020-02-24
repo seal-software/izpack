@@ -264,7 +264,7 @@ public class UninstallDataWriter
 
         jar.putNextEntry(new JarEntry("install.log"));
         BufferedWriter logWriter = new BufferedWriter(new OutputStreamWriter(jar));
-        logWriter.write(installData.getInstallPath());
+        logWriter.write(installData.getUnInstallPath());
         logWriter.newLine();
         Iterator<String> iter = files.iterator();
         if (extLogWriter != null)
