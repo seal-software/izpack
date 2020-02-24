@@ -542,6 +542,9 @@ public class CompilerConfig extends Thread
                         case SUBSTANCE:
                             mergeableList = pathResolver.getMergeableJarFromPackageName("org/pushingpixels");
                             break;
+                        case FLATLAF:
+                            mergeableList = pathResolver.getMergeableJarFromPackageName("com/formdev/flatlaf");
+                            break;
                         case NIMBUS:
                             // Nimbus was included in JDK 6u10, and in JDK7 changed packages.
                             // mergeableList = pathResolver.getMergeableFromPackageName("com/sun/java/swing/plaf/nimbus");
