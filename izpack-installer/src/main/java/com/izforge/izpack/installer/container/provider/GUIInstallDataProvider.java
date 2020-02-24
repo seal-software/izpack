@@ -42,6 +42,7 @@ public class GUIInstallDataProvider extends AbstractInstallDataProvider
 
     private static Map<String, String> substanceVariants = new HashMap<String, String>();
     private static Map<String, String> looksVariants = new HashMap<String, String>();
+    private static Map<String, String> flatLafVariants = new HashMap<String, String>();
 
     static
     {
@@ -76,6 +77,11 @@ public class GUIInstallDataProvider extends AbstractInstallDataProvider
         looksVariants.put("plastic", "com.jgoodies.looks.plastic.PlasticLookAndFeel");
         looksVariants.put("plastic3D", "com.jgoodies.looks.plastic.Plastic3DLookAndFeel");
         looksVariants.put("plasticXP", "com.jgoodies.looks.plastic.Plastic3DLookAndFeel");
+        
+        flatLafVariants.put("flat-light", "com.formdev.flatlaf.FlatLightLaf");
+        flatLafVariants.put("flat-dark", "com.formdev.flatlaf.FlatDarkLaf");
+        flatLafVariants.put("flat-intellij", "com.formdev.flatlaf.FlatIntelliJLaf");
+        flatLafVariants.put("flat-darcula", "com.formdev.flatlaf.FlatDarculaLaf");
     }
 
 
@@ -266,6 +272,21 @@ public class GUIInstallDataProvider extends AbstractInstallDataProvider
                   }
                 }
               });
+            
+            return;
+        }
+        
+        // Flatlaf (https://www.formdev.com/flatlaf/)
+        if (lookAndFeel.is(LookAndFeels.FLATLAF)) {
+            String variant = flatLafVariants.get("flat-light");
+            String variantName = lookAndFeel.getVariantName();
+            if (flatLafVariants.containsKey(variantName))
+            {
+                variant = flatLafVariants.get(variantName);
+            }
+            
+            UIManager.setLookAndFeel(variant);
+            return;
         }
     }
 

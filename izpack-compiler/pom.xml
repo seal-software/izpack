@@ -103,6 +103,10 @@
             <groupId>com.jgoodies</groupId>
             <artifactId>looks</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.formdev</groupId>
+            <artifactId>flatlaf</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
