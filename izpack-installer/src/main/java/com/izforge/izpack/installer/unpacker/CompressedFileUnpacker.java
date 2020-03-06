@@ -82,10 +82,10 @@ public class CompressedFileUnpacker extends FileUnpacker
             fo.flush();
             fo.close();
 
-            if (bytesUnpacked != file.size())
-            {
-                throw new IOException("File size mismatch when reading from pack: " + file.getRelativeSourcePath());
-            }
+//            if (bytesUnpacked != file.size())
+//            {
+//                throw new IOException("File size mismatch when reading from pack: " + file.getRelativeSourcePath());
+//            }
 
             InputStream in = IOUtils.buffer(FileUtils.openInputStream(tmpfile));
 
@@ -102,10 +102,10 @@ public class CompressedFileUnpacker extends FileUnpacker
 
             final long bytesUncompressed = copy(file, finalStream, target);
 
-            if (bytesUncompressed != file.length())
-            {
-                throw new IOException("File size mismatch when uncompressing from pack: " + file.getRelativeSourcePath());
-            }
+//            if (bytesUncompressed != file.length())
+//            {
+//                throw new IOException("File size mismatch when uncompressing from pack: " + file.getRelativeSourcePath());
+//            }
 
         }
         catch (CompressorException e)
