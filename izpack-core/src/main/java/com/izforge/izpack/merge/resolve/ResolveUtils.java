@@ -123,8 +123,10 @@ public class ResolveUtils
     static Collection<URL> getClassPathUrl()
     {
         Collection<URL> result = new HashSet<URL>();
-        java.net.URLClassLoader loader = (URLClassLoader) Thread.currentThread().getContextClassLoader();
-        result.addAll(Arrays.asList(loader.getURLs()));
+        java.lang.ClassLoader loader = Thread.currentThread().getContextClassLoader();
+        if (loader instanceof URLClassLoader) {
+            result.addAll(Arrays.asList(((URLClassLoader) loader).getURLs()));
+        }
         try
         {
             Enumeration<URL> urlEnumeration = loader.getResources("");
@@ -169,7 +171,7 @@ public class ResolveUtils
 
     public static Set<URL> getJarUrlForPackage(String packageName)
     {
-        URLClassLoader loader = (URLClassLoader) Thread.currentThread().getContextClassLoader();
+        ClassLoader loader = Thread.currentThread().getContextClassLoader();
         Set<URL> result = new HashSet<URL>();
         try
         {
