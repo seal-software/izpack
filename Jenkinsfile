@@ -12,14 +12,14 @@ pipeline {
     }
 
     agent { docker {
-        image 'docker.seal-software.net/build-agent'
+        image 'docker.seal-software.net/build-agent-java8'
         args dockerArgs()
 	label 'medium'
     }}
 
     environment {
         BUILDVERSION = buildVersion()
-        VERSION = "5.1.x-SEAL.${env.BUILD_NUMBER}"
+        VERSION = "5.1.3-SEAL.${env.BUILD_NUMBER}"
     }
 
     stages {
