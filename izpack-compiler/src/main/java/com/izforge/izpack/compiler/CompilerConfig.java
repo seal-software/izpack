@@ -189,6 +189,7 @@ public class CompilerConfig extends Thread
      */
     private Set<String> userInputPanelIds;
 
+    private boolean optionalPacks = false;
     private String unpackerClassname = "com.izforge.izpack.installer.unpacker.Unpacker";
     private String packagerClassname = "com.izforge.izpack.compiler.packager.impl.Packager";
     private final CompilerPathResolver pathResolver;
@@ -587,7 +588,7 @@ public class CompilerConfig extends Thread
             String stage = ixmlElement.getAttribute("stage");
             URL url = resourceFinder.findProjectResource(src, "Jar file", ixmlElement);
             boolean uninstaller = "both".equalsIgnoreCase(stage) || "uninstall".equalsIgnoreCase(stage);
-            compiler.checkJarVersions(new File(url.getFile()), minimalJavaVersion);
+            compiler.checkJarVersions(FileUtil.convertUrlToFile(url), minimalJavaVersion);
             if (!compiler.getJavaVersionCorrect())
             {
                 if (javaVersionStrict)
@@ -771,7 +772,32 @@ public class CompilerConfig extends Thread
         compiler.checkDependencies();
         compiler.checkExcludes();
 
+        checkOptionalPacks();
         notifyCompilerListener("addPacks", CompilerListener.END, data);
+    }
+
+    private void checkOptionalPacks() {
+        if (optionalPacks) {
+            List<Panel> panels = packager.getPanelList();
+            boolean packsPanelSpecified = false;
+            for (Panel panel : panels)
+            {
+                String className = panel.getClassName();
+                if (className.equals("com.izforge.izpack.panels.imgpacks.ImgPacksPanel") ||
+                        className.equals("com.izforge.izpack.panels.packs.PacksPanel") ||
+                        className.equals("com.izforge.izpack.panels.treepacks.TreePacksPanel"))
+                {
+                    packsPanelSpecified = true;
+                    break;
+                }
+            }
+            if (!packsPanelSpecified)
+            {
+                // if there are optional packs and no ImgPacksPanel, PacksPanel or TreePacksPanel specified then we just
+                // inform the user as there maybe custom panel providing similar functionality
+                logger.info("There are optional packs specified but none of the ImgPacksPanel, PacksPanel and TreePacksPanel defined.");
+            }
+        }
     }
 
     /**
@@ -781,7 +807,7 @@ public class CompilerConfig extends Thread
      *
      * @param data The XML data
      * @param baseDir the base directory of the pack
-     * @throws CompilerException an error occured during compiling
+     * @throws CompilerException an error occurred during compiling
      */
     private void addPacksSingle(IXMLElement data, File baseDir) throws CompilerException
     {
@@ -809,6 +835,10 @@ public class CompilerConfig extends Thread
             boolean loose = Boolean.parseBoolean(packElement.getAttribute("loose", "false"));
             String description = xmlCompilerHelper.requireChildNamed(packElement, "description").getContent();
             boolean required = xmlCompilerHelper.requireYesNoAttribute(packElement, "required");
+            if (!required)
+            {
+                optionalPacks = true;
+            }
             String group = packElement.getAttribute("group");
             String installGroups = packElement.getAttribute("installGroups");
             String excludeGroup = packElement.getAttribute("excludeGroup");
@@ -1658,6 +1688,7 @@ public class CompilerConfig extends Thread
                     String dName = FilenameUtils.normalizeNoEndSeparator(entryName);
                     File tempDir = new File(baseTempDir, dName);
                     FileUtils.forceMkdir(tempDir);
+                    updateLastModifiedDate(tempDir, entry);
                     if (hasNoFileSet)
                     {
                         String target = targetDir + "/" + dName;
@@ -1674,7 +1705,7 @@ public class CompilerConfig extends Thread
                         tempFileStream = FileUtils.openOutputStream(tempFile);
                         IOUtils.copy(archiveInputStream, tempFileStream);
                         tempFileStream.close();
-
+                        updateLastModifiedDate(tempFile, entry);
                         if (hasNoFileSet)
                         {
                             String target = targetDir + "/" + entryName;
@@ -1734,6 +1765,11 @@ public class CompilerConfig extends Thread
                 FileUtils.forceDeleteOnExit(baseTempDir);
             }
         }
+    }
+
+    private void updateLastModifiedDate(File target, ArchiveEntry entry)
+    {
+        target.setLastModified(entry.getLastModifiedDate().getTime());
     }
 
     /**
@@ -2188,7 +2224,7 @@ public class CompilerConfig extends Thread
 
             // Just validate to avoid XML parser errors during installation later
             if (id.startsWith(Resources.CUSTOM_TRANSLATIONS_RESOURCE_NAME)
-                    || id.startsWith(UserInputPanelSpec.LANG_FILE_NAME)
+                    || id.startsWith(Resources.USER_INPUT_TRANSLATIONS_RESOURCE_NAME)
                     || id.startsWith(Resources.PACK_TRANSLATIONS_RESOURCE_NAME))
             {
                 new LangPackXmlParser().parse(url);

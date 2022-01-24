@@ -64,7 +64,7 @@
     <str id="ImgPacksPanel.snap" txt="Szczegóły pakietu:"/>
     <str id="ImgPacksPanel.summaryCaption" txt="Wybrane pakiety do zainstalowania"/>
     <str id="InfoPanel.headline" txt="Informacje"/>
-    <str id="InfoPanel.info" txt="Proszę przeczytać poniższe informację: "/>
+    <str id="InfoPanel.info" txt="Proszę przeczytać poniższe informacje: "/>
     <str id="InstallationGroupPanel.colNameInstallType" txt="Rodzaj instalacji"/>
     <str id="InstallationGroupPanel.colNameSelected" txt="Wybrany"/>
     <str id="InstallationGroupPanel.colNameSize" txt="Rozmiar"/>
@@ -86,7 +86,7 @@
     <str id="installer.quit.message" txt="Zamknięcie programu spowoduje przerwanie instalacji!"/>
     <str id="installer.quit.title" txt="Czy na pewno chcesz wyjść?"/>
     <str id="installer.step" txt="Krok"/>
-    <str id="installer.title" txt="IzPack - Instalacja programu "/>
+    <str id="installer.title" txt="IzPack - Instalacja programu"/>
     <str id="installer.warning" txt="Ostrzeżenie!"/>
     <str id="installer.yes" txt="Tak"/>
     <str id="installer.errorMessage" txt="An error occured"/>
