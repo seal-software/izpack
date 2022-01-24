@@ -24,6 +24,7 @@ pipeline {
     environment {
         BUILDVERSION = buildVersion()
         VERSION = "5.1.3-SEAL.${env.BUILD_NUMBER}"
+        PROFILE = getDeployProfile()
     }
 
     stages {
