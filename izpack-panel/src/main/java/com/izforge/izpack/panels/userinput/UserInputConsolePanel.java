@@ -254,6 +254,7 @@ public class UserInputConsolePanel extends AbstractConsolePanel
                             rules);
                     addToPanel = true;
                     field.setDisplayed(true);
+                    fieldDefinition.setSaving(true);
                 }
                 else if (required
                         && (

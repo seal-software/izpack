@@ -54,6 +54,11 @@ public interface InstallData
     String UNINSTALL_PATH = "UNINSTALL_PATH";
 
     /**
+     * The estimated size of the installation on disk.
+     */
+    String ESTIMATED_SIZE = "ESTIMATED_SIZE";
+
+    /**
      * Determines if the installation is being modified.
      */
     String MODIFY_INSTALLATION = "modify.izpack.install";

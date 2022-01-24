@@ -72,13 +72,17 @@ public class CompressedFileUnpacker extends FileUnpacker
             throws IOException, InstallerException
     {
         File tmpfile = File.createTempFile("izpack-uncompress", null, FileUtils.getTempDirectory());
+        final long fileSize = file.size();
+        final long fileLength = file.length();
+        final long backReferenceFileLength = file.isBackReference() ? file.getLinkedPackFile().size() : fileSize;
+
         OutputStream fo = null;
         InputStream finalStream = null;
 
         try
         {
             fo = IOUtils.buffer(FileUtils.openOutputStream(tmpfile));
-            final long bytesUnpacked = IOUtils.copyLarge(packInputStream, fo, 0, file.size());
+            final long bytesUnpacked = IOUtils.copyLarge(packInputStream, fo, 0, fileSize);
             fo.flush();
             fo.close();
 
@@ -86,6 +90,11 @@ public class CompressedFileUnpacker extends FileUnpacker
 //            {
 //                throw new IOException("File size mismatch when reading from pack: " + file.getRelativeSourcePath());
 //            }
+            
+            if (!(bytesUnpacked == fileSize || bytesUnpacked == backReferenceFileLength))
+            {
+                throw new IOException("File size mismatch when reading from pack: " + file.getRelativeSourcePath());
+            }
 
             InputStream in = IOUtils.buffer(FileUtils.openInputStream(tmpfile));
 
@@ -106,6 +115,10 @@ public class CompressedFileUnpacker extends FileUnpacker
 //            {
 //                throw new IOException("File size mismatch when uncompressing from pack: " + file.getRelativeSourcePath());
 //            }
+            if (bytesUncompressed != fileLength)
+            {
+                throw new IOException("File size mismatch when uncompressing from pack: " + file.getRelativeSourcePath());
+            }
 
         }
         catch (CompressorException e)

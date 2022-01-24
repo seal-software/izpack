@@ -1,4 +1,8 @@
 # IzPack
+[![Java CI with Maven](https://github.com/izpack/izpack/actions/workflows/maven.yml/badge.svg)](https://github.com/izpack/izpack/actions/workflows/maven.yml)
+[![Apache License 2.0](https://img.shields.io/badge/license-Apache%20License%202.0-blue)](http://www.apache.org/licenses/LICENSE-2.0)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.codehaus.izpack/izpack-core/badge.svg)](https://search.maven.org/search?q=g:org.codehaus.izpack)
+[![Java 8](https://img.shields.io/badge/java-8-blue.svg)](https://adoptium.net/)
 
 [IzPack](http://izpack.org/) is a widely used tool for packaging applications on the Java platform as cross-platform installers.
 
@@ -11,11 +15,9 @@ under different terms.
 
 ## Building IzPack from source
 
-[![Build Status](https://secure.travis-ci.org/izpack/izpack.png?branch=master)](http://travis-ci.org/izpack/izpack)
+IzPack requires Java SE 1.8 and at minimum Maven 3. Due to the JDK compatibility the maximum Maven version supported is 3.6.3 when compiled using JDK 1.8.
 
-IzPack only requires Java SE 6+ and at minimum Maven 3. Due to the JDK compatibility the maximum Maven version supported is 3.2.6 when compiled using JDK 1.6.
-
-    mvn clean install
+    mvn verify install
 
 The build generates a distribution IzPack installer JAR in `izpack-dist/target`.
 
@@ -35,6 +37,10 @@ During the migration from the Codehaus services, which were shut down, we had do
 
 If you are wondering where to find some service the project offers visit out web site http://izpack.org/.
 This domain is still kindly provided and paid by Julien Ponge, the project founder.
+
+The most recent snapshots builds based on the `master` branch are available on the Soantype Server:
+
+[https://oss.sonatype.org/content/repositories/snapshots/org/codehaus/izpack/](https://oss.sonatype.org/content/repositories/snapshots/org/codehaus/izpack/)
 
 Below I provide a list of new services divided by providers:
 
@@ -121,12 +127,6 @@ If you are not a member you can subscribe by sending an e-mail to:
 If you are not a member of one of the above groups of your interest you may subscribe to them with or without being logged on as Google user on the web interface or by mail. For more help on Google Groups [visit the according help center](https://support.google.com/groups).
 
 Be invited to join us again.
-
-#### Google Plus - Social Networking
-
-IzPack has its own page at Google+. We will forward blog posts there and it is open for discussions for registered Google users.
-
-The address is https://plus.google.com/+izpack/.
 
 ### IzPack@Twitter
 

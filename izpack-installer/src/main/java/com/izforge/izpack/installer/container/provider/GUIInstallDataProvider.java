@@ -99,6 +99,8 @@ public class GUIInstallDataProvider extends AbstractInstallDataProvider
         loadDefaultLocale(guiInstallData, locales);
         // Load custom langpack if exist.
         AbstractInstallDataProvider.addCustomLangpack(guiInstallData, locales);
+        // Load user input langpack if exist.
+        AbstractInstallDataProvider.addUserInputLangpack(guiInstallData, locales);
         loadLookAndFeel(guiInstallData);
         if (UIManager.getColor("Button.background") != null)
         {

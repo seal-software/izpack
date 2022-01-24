@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.jar.JarEntry;
 import java.util.jar.JarOutputStream;
 import java.util.logging.Level;
@@ -91,6 +92,12 @@ public class UninstallDataWriter
      */
     public boolean isUninstallRequired()
     {
+        // if install path is not available then license panel could be the first panel and quit button was pressed or
+        // in any case when the install-path is not available we can't write uninstall data
+        if (installData.getInstallPath() == null)
+        {
+            return false;
+        }
         String condition = installData.getInfo().getUninstallerCondition();
 
         return (installData.getInfo().getUninstallerPath() != null)
@@ -394,10 +401,9 @@ public class UninstallDataWriter
         Map<String, Object> additionalData = uninstallData.getAdditionalData();
         if (additionalData != null && !additionalData.isEmpty())
         {
-            for (String key : additionalData.keySet())
+            for (Entry<String, Object> entry : additionalData.entrySet())
             {
-                Serializable content = (Serializable)additionalData.get(key);
-                writeContent(key, content);
+                writeContent(entry.getKey(), entry.getValue());
             }
         }
     }
@@ -462,7 +468,7 @@ public class UninstallDataWriter
      * @param content the content to write. May be an object or a <tt>ByteArrayOutputStream</tt>. No idea why for the latter. TODO
      * @throws IOException for any I/O error
      */
-    private void writeContent(String path, Serializable content) throws IOException
+    private void writeContent(String path, Object content) throws IOException
     {
         jar.putNextEntry(new JarEntry(path));
         if (content instanceof ByteArrayOutputStream)
