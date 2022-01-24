@@ -7,8 +7,8 @@ import java.io.IOException;
 import java.util.zip.ZipFile;
 
 import org.apache.tools.ant.Project;
-import org.hamcrest.collection.IsCollectionContaining;
 import org.hamcrest.core.Is;
+import org.hamcrest.core.IsCollectionContaining;
 import org.junit.Ignore;
 import org.junit.Test;
 

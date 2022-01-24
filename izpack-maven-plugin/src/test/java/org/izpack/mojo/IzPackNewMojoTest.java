@@ -1,7 +1,12 @@
 package org.izpack.mojo;
 
-import com.izforge.izpack.compiler.data.PropertyManager;
-import com.izforge.izpack.matcher.ZipMatcher;
+import static org.hamcrest.MatcherAssert.assertThat;
+
+import java.io.File;
+import java.util.Properties;
+import java.util.jar.JarFile;
+import java.util.zip.ZipFile;
+
 import org.apache.maven.execution.MavenExecutionRequest;
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.plugin.testing.AbstractMojoTestCase;
@@ -12,17 +17,13 @@ import org.apache.maven.project.ProjectBuildingRequest;
 import org.apache.maven.project.ProjectBuildingResult;
 import org.eclipse.aether.DefaultRepositorySystemSession;
 import org.eclipse.aether.RepositorySystemSession;
-import org.hamcrest.collection.IsCollectionContaining;
 import org.hamcrest.core.Is;
+import org.hamcrest.core.IsCollectionContaining;
 import org.hamcrest.core.IsNull;
 import org.junit.Test;
 
-import java.io.File;
-import java.util.Properties;
-import java.util.jar.JarFile;
-import java.util.zip.ZipFile;
-
-import static org.hamcrest.MatcherAssert.assertThat;
+import com.izforge.izpack.compiler.data.PropertyManager;
+import com.izforge.izpack.matcher.ZipMatcher;
 
 /**
  * Test of new IzPack mojo

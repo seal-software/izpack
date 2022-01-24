@@ -30,6 +30,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mockito;
 
@@ -87,6 +88,7 @@ public class DefaultLocalesTest
      * by the JVM, so may not be able to be retrieved.
      */
     @Test
+    @Ignore
     public void testLangPacks()
     {
         ResourceManager resources = createResourcesForMessages();
