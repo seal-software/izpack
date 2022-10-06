@@ -11,10 +11,10 @@
   <url>http://izpack.org/</url>
 
   <parent>
-     <groupId>com.seal</groupId>
-     <artifactId>masterpom</artifactId>
-     <version>3.0.0-41</version>
-     <relativePath/>
+    <groupId>com.seal</groupId>
+    <artifactId>masterpom</artifactId>
+    <version>3.0.3-71</version>
+    <relativePath/>
   </parent>
 
   <licenses>
