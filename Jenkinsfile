@@ -15,7 +15,7 @@ pipeline {
 
     agent {
         docker {
-            image 'docker.seal-software.net/build-agent-java8'
+            image 'docker.seal-software.net/build-agent-java8-ds'
             args dockerArgs()
             label 'medium'
         }
@@ -38,7 +38,7 @@ pipeline {
         stage('build') {
             steps {
                 sh label: "Building version $BUILDVERSION",
-                        script: "mvn -T1C -U clean install"
+                        script: "mvn -V -T1C -U clean install"
             }
             post {
                 always {
@@ -56,7 +56,7 @@ pipeline {
             }
             steps {
                 sh label: "Deploying version $BUILDVERSION",
-                        script: "mvn -T1C -P$PROFILE -e clean deploy -Dmaven.test.skip=true"
+                        script: "mvn -V -T1C -P$PROFILE -e deploy -Dmaven.test.skip=true"
             }
         }
     }
